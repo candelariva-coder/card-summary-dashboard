@@ -7,44 +7,71 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
   * { box-sizing:border-box; margin:0; padding:0; }
-  body { font-family:'Segoe UI',sans-serif; background:#f4f4f4; color:#333; }
-  header { background:#333; color:#FFE600; padding:20px 32px; display:flex; align-items:center; justify-content:space-between; }
+  body { font-family:'Segoe UI',sans-serif; background:#f0f2f5; color:#333; }
+
+  /* Header */
+  header { background:#1a1a2e; color:#FFE600; padding:20px 32px; display:flex; align-items:center; justify-content:space-between; }
   header h1 { font-size:22px; font-weight:700; letter-spacing:.5px; }
-  header span { font-size:12px; color:#aaa; }
-  .filters { background:#fff; padding:16px 32px; display:flex; gap:24px; align-items:center; flex-wrap:wrap; border-bottom:3px solid #FFE600; }
+  header span { font-size:12px; color:#888; }
+
+  /* Filters */
+  .filters { background:#fff; padding:14px 32px; display:flex; gap:24px; align-items:center; flex-wrap:wrap; border-bottom:3px solid #FFE600; box-shadow:0 2px 4px rgba(0,0,0,.06); }
   .filters label { font-weight:600; font-size:13px; color:#555; }
-  .filters select { padding:6px 12px; border:1px solid #ddd; border-radius:6px; font-size:13px; cursor:pointer; }
+  .filters select { padding:6px 12px; border:1px solid #ddd; border-radius:6px; font-size:13px; cursor:pointer; background:#fafafa; }
   .filters select:focus { outline:none; border-color:#FFE600; }
-  .kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:16px; padding:24px 32px; }
-  .kpi { background:#fff; border-radius:10px; padding:18px 20px; box-shadow:0 1px 4px rgba(0,0,0,.08); border-left:4px solid #FFE600; }
-  .kpi .label { font-size:11px; color:#888; text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px; }
-  .kpi .value { font-size:26px; font-weight:700; color:#333; }
-  .kpi .sub { font-size:11px; color:#aaa; margin-top:4px; }
-  .charts { display:grid; grid-template-columns:1fr 1fr; gap:20px; padding:0 32px 24px; }
-  .chart-card { background:#fff; border-radius:10px; padding:20px; box-shadow:0 1px 4px rgba(0,0,0,.08); }
-  .chart-card h3 { font-size:13px; font-weight:600; color:#555; margin-bottom:16px; text-transform:uppercase; letter-spacing:.5px; }
-  .section-title { font-size:15px; font-weight:700; color:#333; padding:24px 32px 0; margin-bottom:12px; }
-  .table-section { padding:0 32px 32px; }
-  table { width:100%; border-collapse:collapse; background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,.08); }
-  th { background:#444; color:#fff; padding:10px 14px; text-align:left; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:.4px; }
-  td { padding:10px 14px; font-size:13px; border-bottom:1px solid #f0f0f0; }
-  tr:nth-child(even) td { background:#fafafa; }
-  tr.total td { background:#fffde7; font-weight:700; }
+
+  /* KPIs */
+  .kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(155px,1fr)); gap:14px; padding:24px 32px 16px; }
+  .kpi { background:#fff; border-radius:10px; padding:16px 20px; box-shadow:0 1px 4px rgba(0,0,0,.07); border-left:4px solid #FFE600; }
+  .kpi .label { font-size:10px; color:#999; text-transform:uppercase; letter-spacing:.6px; margin-bottom:6px; }
+  .kpi .value { font-size:24px; font-weight:700; color:#1a1a2e; }
+  .kpi .sub { font-size:11px; color:#bbb; margin-top:3px; }
+
+  /* Section header */
+  .section-header { padding:24px 32px 12px; display:flex; align-items:baseline; gap:12px; }
+  .section-header h2 { font-size:15px; font-weight:700; color:#1a1a2e; text-transform:uppercase; letter-spacing:.5px; }
+  .section-header span { font-size:12px; color:#aaa; }
+
+  /* â”€â”€ Funnel cards (light) â”€â”€ */
+  .funnel-section { background:#f0f2f5; padding:0 32px 32px; }
+  .funnel-section .section-header { padding:24px 0 16px; }
+  .funnel-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
+  .funnel-card { background:#fff; border-radius:14px; padding:22px; box-shadow:0 1px 6px rgba(0,0,0,.08); }
+  .funnel-card-title { font-size:14px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:6px; }
+  .funnel-card-line { height:3px; border-radius:2px; margin-bottom:20px; }
+  .f-step { margin-bottom:16px; }
+  .f-step-header { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:5px; }
+  .f-step-label { font-size:13px; color:#666; }
+  .f-step-value { font-size:20px; font-weight:700; }
+  .f-bar-bg { height:4px; background:#eee; border-radius:2px; margin-bottom:5px; }
+  .f-bar { height:4px; border-radius:2px; transition:width .5s ease; }
+  .f-pct { font-size:11px; color:#aaa; }
+  .f-pct b { color:#888; font-weight:600; }
+
+  /* Charts */
+  .charts { display:grid; grid-template-columns:1fr 1fr; gap:20px; padding:24px 32px; }
+  .chart-card { background:#fff; border-radius:12px; padding:22px; box-shadow:0 1px 4px rgba(0,0,0,.07); }
+  .chart-card h3 { font-size:12px; font-weight:700; color:#888; margin-bottom:16px; text-transform:uppercase; letter-spacing:.6px; }
+
+  /* Table */
+  .table-wrap { padding:0 32px 40px; }
+  table { width:100%; border-collapse:collapse; background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,.07); }
+  th { background:#1a1a2e; color:#FFE600; padding:11px 14px; text-align:left; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; }
+  td { padding:10px 14px; font-size:13px; border-bottom:1px solid #f2f2f2; }
+  tr:nth-child(even) td { background:#fafbfc; }
+  tr.total td { background:#fffde7; font-weight:700; border-top:2px solid #FFE600; }
   tr:hover td { background:#fff9e6; }
-  .funnel-bar-wrap { padding:4px 0; }
-  .funnel-bar { height:28px; background:#FFE600; border-radius:4px; display:flex; align-items:center; padding:0 8px; font-size:12px; font-weight:600; white-space:nowrap; transition:width .4s; }
-  .funnel-stage { display:flex; align-items:center; gap:12px; margin:6px 0; }
-  .funnel-label { width:140px; font-size:12px; color:#555; text-align:right; flex-shrink:0; }
-  .funnel-count { font-size:12px; color:#888; width:80px; }
-  footer { text-align:center; padding:16px; font-size:11px; color:#aaa; }
-  @media(max-width:768px) { .charts{ grid-template-columns:1fr; } .kpis{ grid-template-columns:repeat(2,1fr); } }
+
+  footer { text-align:center; padding:16px; font-size:11px; color:#aaa; background:#f0f2f5; }
+  @media(max-width:900px) { .funnel-grid{ grid-template-columns:repeat(2,1fr); } .charts{ grid-template-columns:1fr; } }
+  @media(max-width:600px) { .funnel-grid{ grid-template-columns:1fr; } .kpis{ grid-template-columns:repeat(2,1fr); } }
 </style>
 </head>
 <body>
 
 <header>
   <h1>Card Summary &mdash; Performance Dashboard</h1>
-  <span>Última actualización: 2026-03-14 10:00</span>
+  <span>Ãšltima actualizaciÃ³n: 2026-03-14 10:26</span>
 </header>
 
 <div class="filters">
@@ -55,36 +82,36 @@
   </select>
   <label>Mes:</label>
   <select id="fMes" onchange="render()"></select>
-  <label>Producto:</label>
-  <select id="fProd" onchange="render()">
-    <option value="Todos">Todos</option>
-    <option value="CF">CF</option>
-    <option value="PPV">PPV</option>
-    <option value="DINERO_EXPRESS">Dinero Express</option>
-    <option value="SELLER_LINE">Seller Line</option>
-  </select>
 </div>
 
 <div id="kpis" class="kpis"></div>
 
-<div class="charts">
-  <div class="chart-card">
-    <h3>Funnel de Adquisici&oacute;n</h3>
-    <div id="funnelViz"></div>
+<!-- â”€â”€ Funnel por Producto â”€â”€ -->
+<div class="funnel-section">
+  <div class="section-header">
+    <h2>Funnel por Producto</h2>
+    <span>Converters acumulados por etapa</span>
   </div>
-  <div class="chart-card"><h3>Ofertados vs Originados por Site</h3><canvas id="chartSite"></canvas></div>
-</div>
-<div class="charts">
-  <div class="chart-card"><h3>USD Originado por Producto</h3><canvas id="chartUSD"></canvas></div>
-  <div class="chart-card"><h3>Mix de Originaciones</h3><canvas id="chartMix"></canvas></div>
+  <div class="funnel-grid" id="funnelGrid"></div>
 </div>
 
-<p class="section-title">Detalle por Site &times; Producto</p>
-<div class="table-section">
+<!-- â”€â”€ Charts â”€â”€ -->
+<div class="charts">
+  <div class="chart-card"><h3>Ofertados vs Originados por Site</h3><canvas id="chartSite"></canvas></div>
+  <div class="chart-card"><h3>USD Originado por Producto</h3><canvas id="chartUSD"></canvas></div>
+</div>
+<div class="charts">
+  <div class="chart-card"><h3>Mix de Originaciones (Q)</h3><canvas id="chartMix"></canvas></div>
+  <div class="chart-card"><h3>CVR % por Site &times; Producto</h3><canvas id="chartCVR"></canvas></div>
+</div>
+
+<!-- â”€â”€ Table â”€â”€ -->
+<div class="section-header"><h2>Detalle por Site &times; Producto</h2></div>
+<div class="table-wrap">
   <table>
     <thead><tr>
       <th>Site</th><th>Producto</th><th>Ofertados</th><th>Originados</th>
-      <th>CVR %</th><th>USD Prop</th><th>USD Orig</th>
+      <th>CVR %</th><th>USD Prop</th><th>USD Orig</th><th>Ticket USD</th>
     </tr></thead>
     <tbody id="tableBody"></tbody>
   </table>
@@ -97,10 +124,17 @@ const RAW = [{"SITE": "MLA", "MES": "2026-01-01", "PRODUCT": "CF", "SEL_SEGMENT"
 const MONTH_ORDER = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 const SITES    = ['MLA','MLB','MLC','MLM'];
 const PRODUCTS = ['CF','PPV','DINERO_EXPRESS','SELLER_LINE'];
-const PROD_LABELS = {'CF':'CF','PPV':'PPV','DINERO_EXPRESS':'Dinero Express','SELLER_LINE':'Seller Line'};
-const PROD_COLORS = {'CF':'#FFE600','PPV':'#444','DINERO_EXPRESS':'#888','SELLER_LINE':'#bbb'};
-const FUNNEL_STAGES = ['0.SIN INGRESO','1.ADMIN','2.ONBOARDING','3.SIMULADOR','4.RYC','5.CONGRATS'];
-const STAGE_LABELS  = ['Sin Ingreso','Admin','Onboarding','Simulador','RYC','Congrats'];
+const PROD_LABELS = {'CF':'Cuota Fija','PPV':'PPV','DINERO_EXPRESS':'Dinero Express','SELLER_LINE':'Seller Line'};
+const PROD_COLORS = {'CF':'#FFE600','PPV':'#00E676','DINERO_EXPRESS':'#00C9FF','SELLER_LINE':'#BB86FC'};
+
+// Funnel stages: label, min N_FUNNEL_RAW to be counted (null = all offered, 'orig' = originados)
+const FUNNEL_STEPS = [
+  { label:'Clicks Card',   min: null   },
+  { label:'Simulador',     min: 2      },
+  { label:'Cuotas',        min: 3      },
+  { label:'R&C',           min: 4      },
+  { label:'Originaciones', min:'orig'  },
+];
 
 // Populate month filter
 const months = [...new Set(RAW.map(r=>r.MonthName))].sort((a,b)=>MONTH_ORDER.indexOf(a)-MONTH_ORDER.indexOf(b));
@@ -111,117 +145,172 @@ const fMes = document.getElementById('fMes');
 
 let charts = {};
 
-function filtered() {
-  const s=document.getElementById('fSite').value;
-  const m=document.getElementById('fMes').value;
-  const p=document.getElementById('fProd').value;
-  return RAW.filter(r=>
-    (s==='Todos'||r.SITE===s) &&
-    (m==='Todos'||r.MonthName===m) &&
-    (p==='Todos'||r.PRODUCT===p)
+function getFilters() {
+  return {
+    site: document.getElementById('fSite').value,
+    mes:  document.getElementById('fMes').value,
+  };
+}
+
+function applyFilters(rows, {site, mes}) {
+  return rows.filter(r =>
+    (site==='Todos' || r.SITE===site) &&
+    (mes ==='Todos' || r.MonthName===mes)
   );
 }
 
 function agg(rows) {
   const d={offered:0,originated:0,usd_prop:0,usd_orig:0};
   rows.forEach(r=>{
-    d.offered    += +r.Q_OFERTADOS||0;
-    d.originated += +r.Q_ORIGINADOS||0;
-    d.usd_prop   += +r.PROP_AMT_USD||0;
-    d.usd_orig   += +r.CRD_AMT_USD||0;
+    d.offered    += +r.Q_OFERTADOS  || 0;
+    d.originated += +r.Q_ORIGINADOS || 0;
+    d.usd_prop   += +r.PROP_AMT_USD || 0;
+    d.usd_orig   += +r.CRD_AMT_USD  || 0;
   });
-  d.cvr = d.offered>0 ? (d.originated/d.offered*100).toFixed(2) : 0;
-  d.ticket = d.originated>0 ? (d.usd_orig/d.originated).toFixed(0) : 0;
+  d.cvr    = d.offered    > 0 ? +(d.originated/d.offered*100).toFixed(2)    : 0;
+  d.ticket = d.originated > 0 ? +(d.usd_orig/d.originated).toFixed(0) : 0;
   return d;
 }
 
-// Cumulative funnel: users who reached AT LEAST each stage
-function buildFunnel(rows) {
-  const total = rows.reduce((a,r)=>a+(+r.Q_OFERTADOS||0),0);
-  return FUNNEL_STAGES.map(stage=>
-    rows.filter(r=>r.FUNNEL && r.FUNNEL >= stage)
-        .reduce((a,r)=>a+(+r.Q_OFERTADOS||0),0)
-  );
+function funnelStep(rows, step) {
+  if (step.min === null)   return rows.reduce((a,r)=>a+(+r.Q_OFERTADOS||0), 0);
+  if (step.min === 'orig') return rows.reduce((a,r)=>a+(+r.Q_ORIGINADOS||0), 0);
+  return rows
+    .filter(r => r.N_FUNNEL_RAW !== null && r.N_FUNNEL_RAW !== '' && +r.N_FUNNEL_RAW >= step.min)
+    .reduce((a,r)=>a+(+r.Q_OFERTADOS||0), 0);
 }
 
-function fmt(n)    { return Number(n).toLocaleString('es-AR'); }
-function fmtUSD(n) { return '$'+Number(n).toLocaleString('es-AR',{maximumFractionDigits:0}); }
+function fmtK(n) {
+  n = +n || 0;
+  if (n >= 1e6) return (n/1e6).toFixed(1)+'M';
+  if (n >= 1e3) return (n/1e3).toFixed(1)+'K';
+  return n.toString();
+}
+function fmt(n)    { return (+n||0).toLocaleString('es-AR'); }
+function fmtUSD(n) { return '$'+(+n||0).toLocaleString('es-AR',{maximumFractionDigits:0}); }
+function pct(a,b)  { return b>0 ? (a/b*100).toFixed(2) : '0.00'; }
 
 function mkChart(id,type,labels,datasets,opts={}) {
   if(charts[id]) charts[id].destroy();
   const ctx=document.getElementById(id);
   if(!ctx) return;
-  charts[id]=new Chart(ctx,{type,data:{labels,datasets},options:{responsive:true,plugins:{legend:{position:'bottom'}},...opts}});
+  charts[id]=new Chart(ctx,{type,data:{labels,datasets},
+    options:{responsive:true,plugins:{legend:{position:'bottom'}},...opts}});
+}
+
+function renderFunnelGrid(rows) {
+  let html = '';
+  PRODUCTS.forEach(prod => {
+    const pRows = rows.filter(r=>r.PRODUCT===prod);
+    const color = PROD_COLORS[prod];
+    const vals  = FUNNEL_STEPS.map(s=>funnelStep(pRows, s));
+    const top   = vals[0] || 1;
+
+    let stepsHtml = '';
+    vals.forEach((val, i) => {
+      const barW   = Math.round(val/top*100);
+      const pTotal = pct(val, top);
+      const pPrev  = i > 0 && vals[i-1] > 0 ? pct(val, vals[i-1]) : null;
+      const subTxt = i === 0
+        ? '100.00% del total'
+        : `${pTotal}% del total${pPrev ? ' &middot; <b>'+ pPrev +'%</b> del paso anterior' : ''}`;
+      stepsHtml += `
+        <div class="f-step">
+          <div class="f-step-header">
+            <span class="f-step-label">${FUNNEL_STEPS[i].label}</span>
+            <span class="f-step-value" style="color:${color}">${fmtK(val)}</span>
+          </div>
+          <div class="f-bar-bg"><div class="f-bar" style="width:${barW}%;background:${color}"></div></div>
+          <div class="f-pct">${subTxt}</div>
+        </div>`;
+    });
+
+    html += `
+      <div class="funnel-card">
+        <div class="funnel-card-title" style="color:${color}">${PROD_LABELS[prod]}</div>
+        <div class="funnel-card-line"  style="background:${color}"></div>
+        ${stepsHtml}
+      </div>`;
+  });
+  document.getElementById('funnelGrid').innerHTML = html;
 }
 
 function render() {
-  const rows = filtered();
-  const total = agg(rows);
+  const f    = getFilters();
+  const rows = applyFilters(RAW, f);
+  const tot  = agg(rows);
 
   // KPIs
-  document.getElementById('kpis').innerHTML=[
-    ['Ofertados',   fmt(total.offered),    'Q usuarios con oferta'],
-    ['Originados',  fmt(total.originated), 'Q créditos otorgados'],
-    ['CVR %',       total.cvr+'%',         'Originados / Ofertados'],
-    ['USD Propuesto',fmtUSD(total.usd_prop),'Monto propuesto'],
-    ['USD Originado',fmtUSD(total.usd_orig),'Monto otorgado'],
-    ['Ticket Promedio','$'+fmt(total.ticket),'USD por crédito'],
-  ].map(([l,v,s])=>`<div class="kpi"><div class="label">${l}</div><div class="value">${v}</div><div class="sub">${s}</div></div>`).join('');
+  document.getElementById('kpis').innerHTML = [
+    ['Ofertados',     fmtK(tot.offered),    'Usuarios con oferta'],
+    ['Originados',    fmtK(tot.originated), 'CrÃ©ditos otorgados'],
+    ['CVR %',         tot.cvr+'%',          'Originados / Ofertados'],
+    ['USD Propuesto', fmtUSD(tot.usd_prop), 'Monto propuesto'],
+    ['USD Originado', fmtUSD(tot.usd_orig), 'Monto otorgado'],
+    ['Ticket Prom.',  fmtUSD(tot.ticket),   'USD por crÃ©dito'],
+  ].map(([l,v,s])=>`<div class="kpi">
+      <div class="label">${l}</div>
+      <div class="value">${v}</div>
+      <div class="sub">${s}</div>
+    </div>`).join('');
 
-  // Funnel viz
-  const funnelVals = buildFunnel(rows);
-  const maxVal = funnelVals[0]||1;
-  let fhtml='';
-  STAGE_LABELS.forEach((lbl,i)=>{
-    const val=funnelVals[i];
-    const pct=Math.round(val/maxVal*100);
-    const pctStr=i===0?'100%':(maxVal>0?(val/maxVal*100).toFixed(1)+'%':'0%');
-    const color = i===0?'#444':(i===5?'#FFE600':'#'+Math.round(68+i*25).toString(16).padStart(2,'0').repeat(3));
-    fhtml+=`<div class="funnel-stage">
-      <div class="funnel-label">${lbl}</div>
-      <div class="funnel-bar-wrap" style="flex:1">
-        <div class="funnel-bar" style="width:${pct}%;background:${i===5?'#FFE600':i===0?'#555':'#888'}">
-          ${fmt(val)}
-        </div>
-      </div>
-      <div class="funnel-count">${pctStr}</div>
-    </div>`;
-  });
-  document.getElementById('funnelViz').innerHTML=fhtml;
+  // Funnel cards
+  renderFunnelGrid(rows);
 
   // Chart: Ofertados vs Originados por Site
-  const siteData = SITES.map(s=>agg(rows.filter(r=>r.SITE===s)));
+  const siteD = SITES.map(s=>agg(rows.filter(r=>r.SITE===s)));
   mkChart('chartSite','bar',SITES,[
-    {label:'Ofertados', data:siteData.map(d=>d.offered),   backgroundColor:'#888'},
-    {label:'Originados',data:siteData.map(d=>d.originated),backgroundColor:'#FFE600'},
+    {label:'Ofertados', data:siteD.map(d=>d.offered),   backgroundColor:'#444'},
+    {label:'Originados',data:siteD.map(d=>d.originated),backgroundColor:'#FFE600'},
   ],{scales:{x:{stacked:false},y:{stacked:false}}});
 
   // Chart: USD Originado por Producto
-  const prodData = PRODUCTS.map(p=>agg(rows.filter(r=>r.PRODUCT===p)));
+  const prodD = PRODUCTS.map(p=>agg(rows.filter(r=>r.PRODUCT===p)));
   mkChart('chartUSD','bar',PRODUCTS.map(p=>PROD_LABELS[p]),[
-    {label:'USD Orig', data:prodData.map(d=>d.usd_orig), backgroundColor:PRODUCTS.map(p=>PROD_COLORS[p])},
+    {label:'USD Orig',data:prodD.map(d=>d.usd_orig),
+      backgroundColor:PRODUCTS.map(p=>PROD_COLORS[p])},
   ],{plugins:{legend:{display:false}}});
 
   // Chart: Mix de Originaciones (doughnut)
   mkChart('chartMix','doughnut',PRODUCTS.map(p=>PROD_LABELS[p]),[
-    {data:prodData.map(d=>d.originated), backgroundColor:PRODUCTS.map(p=>PROD_COLORS[p])}
+    {data:prodD.map(d=>d.originated),
+      backgroundColor:PRODUCTS.map(p=>PROD_COLORS[p])}
   ]);
+
+  // Chart: CVR % por Site x Producto (grouped bar)
+  mkChart('chartCVR','bar',SITES,
+    PRODUCTS.map(p=>{
+      const d=SITES.map(s=>agg(rows.filter(r=>r.SITE===s&&r.PRODUCT===p)).cvr);
+      return {label:PROD_LABELS[p],data:d,backgroundColor:PROD_COLORS[p]};
+    }),
+    {scales:{x:{stacked:false},y:{stacked:false,title:{display:true,text:'CVR %'}}},
+      plugins:{tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+ctx.parsed.y+'%'}}}}
+  );
 
   // Table
   let tbody='';
   SITES.forEach(site=>{
     PRODUCTS.forEach(prod=>{
       const d=agg(rows.filter(r=>r.SITE===site&&r.PRODUCT===prod));
-      if(d.offered>0||d.originated>0)
-        tbody+=`<tr><td><b>${site}</b></td><td>${PROD_LABELS[prod]}</td>
-          <td>${fmt(d.offered)}</td><td>${fmt(d.originated)}</td>
-          <td>${d.cvr}%</td><td>${fmtUSD(d.usd_prop)}</td><td>${fmtUSD(d.usd_orig)}</td></tr>`;
+      if(d.offered===0 && d.originated===0) return;
+      tbody+=`<tr>
+        <td><b>${site}</b></td>
+        <td style="color:${PROD_COLORS[prod]};font-weight:600">${PROD_LABELS[prod]}</td>
+        <td>${fmt(d.offered)}</td>
+        <td>${fmt(d.originated)}</td>
+        <td>${d.cvr}%</td>
+        <td>${fmtUSD(d.usd_prop)}</td>
+        <td>${fmtUSD(d.usd_orig)}</td>
+        <td>${fmtUSD(d.ticket)}</td>
+      </tr>`;
     });
   });
-  const tot=agg(rows);
-  tbody+=`<tr class="total"><td>TOTAL</td><td>-</td>
+  tbody+=`<tr class="total">
+    <td>TOTAL</td><td>-</td>
     <td>${fmt(tot.offered)}</td><td>${fmt(tot.originated)}</td>
-    <td>${tot.cvr}%</td><td>${fmtUSD(tot.usd_prop)}</td><td>${fmtUSD(tot.usd_orig)}</td></tr>`;
+    <td>${tot.cvr}%</td><td>${fmtUSD(tot.usd_prop)}</td>
+    <td>${fmtUSD(tot.usd_orig)}</td><td>${fmtUSD(tot.ticket)}</td>
+  </tr>`;
   document.getElementById('tableBody').innerHTML=tbody;
 }
 
