@@ -87,18 +87,18 @@
   header .meta{position:absolute;right:32px;}
   .filters{border-bottom:3px solid #1565c0;}
   .filters select:focus{border-color:#1565c0;}
-  /* KPI section dark */
+  /* KPI section — glass cards */
   .kpis{background:#111111;margin:0;padding:20px 32px 12px;}
   .insights-bar{background:#111111;padding-bottom:20px;}
-  .kpi{background:#2a2a2a;border-top-color:#444;box-shadow:0 2px 8px rgba(0,0,0,.3);}
+  .kpi{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-top:3px solid #1565c0;box-shadow:none;}
   .kpi .label{color:rgba(255,255,255,.45);}
   .kpi .value{color:#ffffff;}
   .kpi .sub{color:rgba(255,255,255,.3);}
-  .kpi.hi{background:#2a2a2a;border-top-color:#FFE600;}
-  .kpi.hi .label{color:rgba(255,255,255,.45);}
-  .kpi.hi .value{color:#FFE600;}
-  .kpi.hi .sub{color:rgba(255,255,255,.3);}
-  .chip{background:#2a2a2a;color:rgba(255,255,255,.75);border-left-color:#FFE600;box-shadow:none;}
+  .kpi.hi{background:#FFE600;border:1px solid #e6b800;border-top:3px solid #e6b800;}
+  .kpi.hi .label{color:rgba(0,0,0,.55);}
+  .kpi.hi .value{color:#111111;}
+  .kpi.hi .sub{color:rgba(0,0,0,.4);}
+  .chip{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-left:3px solid #1565c0;color:rgba(255,255,255,.75);box-shadow:none;}
   .chip strong{color:#FFE600;}
   /* Charts section dark */
   .charts-row{background:#1e1e1e;padding-top:20px;padding-bottom:20px;margin:0;}
@@ -122,8 +122,11 @@
   th{background:#002147;color:#ffffff;}
   tr:hover td{background:#f0f5fb;}
   .total-row td{border-top:2px solid #1565c0;}
-  .penet-card{background:#fffde7;border-left-color:#e6b800;}
-  .penet-label{color:#555;}
+  .penet-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-left:4px solid #1565c0;}
+  .penet-label{color:rgba(255,255,255,.45);}
+  .penet-pct{color:#ffffff;}
+  .penet-detail{color:rgba(255,255,255,.3);}
+  .penet-section{background:#111111;}
   .penet-pct{color:#111111;}
   .penet-detail{color:#888;}
   .funnel-total{border-top-color:#002147;}
@@ -143,7 +146,7 @@
     <h1>Card Summary - Placement Dashboard</h1>
   </div>
   <div class="meta">
-    <div class="updated">Actualizado: 2026-04-08 15:11</div>
+    <div class="updated">Actualizado: 2026-04-08 15:16</div>
     <div class="badge">BU = ON</div>
     <div class="badge2">Funnel anclado al mes de oferta</div>
   </div>
@@ -487,8 +490,8 @@ function render(){
     data:{
       labels:SITES,
       datasets:[
-        {label:'Ofertados', data:siteD.map(d=>d.off),  backgroundColor:'#d0d5dd', yAxisID:'y'},
-        {label:'Originados',data:siteD.map(d=>d.orig), backgroundColor:'#FFE600', yAxisID:'y2'},
+        {label:'Ofertados', data:siteD.map(d=>d.off),  backgroundColor:'#555555', yAxisID:'y'},
+        {label:'Originados',data:siteD.map(d=>d.orig), backgroundColor:'#bbbbbb', yAxisID:'y2'},
       ]
     },
     options:{
