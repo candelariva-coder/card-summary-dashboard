@@ -89,7 +89,7 @@
     <a href="originations.html" class="nav-link">Originations →</a>
   </div>
   <div class="meta">
-    <div class="updated">Actualizado: 2026-04-08 13:53</div>
+    <div class="updated">Actualizado: 2026-04-08 14:02</div>
     <div class="badge">BU = ON</div>
     <div class="badge2">Funnel anclado al mes de oferta</div>
   </div>
@@ -183,14 +183,13 @@ const PCLR = {'CF':'#FFE600','PPV':'#00C9FF','DINERO_EXPRESS':'#FF6B6B','SELLER_
 const PCLR2= {'CF':'#9a7c00','PPV':'#006f8f','DINERO_EXPRESS':'#8f1f1f','SELLER_LINE':'#5a3daf'};
 
 const STEPS = [
-  {label:'Oferta',       min:null},
-  {label:'Views',        min:'views'},
-  {label:'Clicks',       min:'clicks'},
-  {label:'Onboarding',   min:2},
-  {label:'Sim Inicio',   min:3},
-  {label:'Sim Completo', min:3, xf:r=>{const p=r.PATH_RAW||'';return p.includes('term_selection')||p.includes('payments_detail');}},
-  {label:'R\x26C',      min:4},
-  {label:'Congrats',     min:'orig'},
+  {label:'Oferta',      min:null},
+  {label:'Views',       min:'views'},
+  {label:'Clicks',      min:'clicks'},
+  {label:'Loan Amount', min:3},
+  {label:'Loan Term',   min:3, xf:r=>{const p=r.PATH_RAW||'';return p.includes('term_selection')||p.includes('payments_detail');}},
+  {label:'R\x26C',     min:4},
+  {label:'Congrats',    min:'orig'},
 ];
 
 const months=[...new Set(RAW.map(r=>r.MonthName))].sort((a,b)=>MONTH_ORDER.indexOf(a)-MONTH_ORDER.indexOf(b));
