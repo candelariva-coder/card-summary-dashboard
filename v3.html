@@ -89,7 +89,7 @@
     <a href="originations.html" class="nav-link">Originations →</a>
   </div>
   <div class="meta">
-    <div class="updated">Actualizado: 2026-04-08 14:02</div>
+    <div class="updated">Actualizado: 2026-04-08 14:11</div>
     <div class="badge">BU = ON</div>
     <div class="badge2">Funnel anclado al mes de oferta</div>
   </div>
@@ -187,7 +187,7 @@ const STEPS = [
   {label:'Views',       min:'views'},
   {label:'Clicks',      min:'clicks'},
   {label:'Loan Amount', min:3},
-  {label:'Loan Term',   min:3, xf:r=>{const p=r.PATH_RAW||'';return p.includes('term_selection')||p.includes('payments_detail');}},
+  {label:'Loan Term',   min:3, xf:r=>{const p=r.PATH_RAW||'';return p.includes('term_selection')||p.includes('payments_detail')||+r.N_FUNNEL_RAW>=4;}},
   {label:'R\x26C',     min:4},
   {label:'Congrats',    min:'orig'},
 ];
