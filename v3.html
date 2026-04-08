@@ -89,7 +89,7 @@
     <a href="originations.html" class="nav-link">Originations →</a>
   </div>
   <div class="meta">
-    <div class="updated">Actualizado: 2026-04-08 14:20</div>
+    <div class="updated">Actualizado: 2026-04-08 14:22</div>
     <div class="badge">BU = ON</div>
     <div class="badge2">Funnel anclado al mes de oferta</div>
   </div>
@@ -150,6 +150,7 @@
 </div>
 
 <div class="charts-row">
+  <div class="chart-card"><h3>Ofertados</h3><canvas id="chartTrendOferta" height="160"></canvas></div>
   <div class="chart-card"><h3>Originaciones por Unidad</h3><canvas id="chartTrendUnits" height="160"></canvas></div>
   <div class="chart-card"><h3>Monto Originado</h3><canvas id="chartTrendAmt" height="160"></canvas></div>
   <div class="chart-card"><h3>CVR por etapa</h3><canvas id="chartFunnelCVR" height="160"></canvas></div>
@@ -413,6 +414,7 @@ function render(){
               y2:{beginAtZero:true,position:'right',title:{display:true,text:'CVR %'},grid:{drawOnChartArea:false}}},
       plugins:{tooltip:{callbacks:{label:ctx=>ctx.dataset.label==='CVR %'?'CVR: '+ctx.parsed.y+'%':ctx.dataset.label+': '+fmtFn(ctx.parsed.y)}}}});
   };
+  mkTrend('chartTrendOferta',ag=>ag.off,'Ofertados',fmt);
   mkTrend('chartTrendUnits',ag=>ag.orig,'Originaciones',fmt);
   mkTrend('chartTrendAmt',ag=>getOrig(ag),'Monto',fmtAmt);
 
