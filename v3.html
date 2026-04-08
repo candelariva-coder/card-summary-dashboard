@@ -82,24 +82,27 @@
 
   /* ── V3 Palette Override ───────────────────── */
   body{background:#111111;}
-  header{background:#111111;justify-content:center;position:relative;}
+  header{background:#FFE600;justify-content:center;position:relative;}
+  header h1{color:#111111;}
   header>div:first-child{text-align:center;}
   header .meta{position:absolute;right:32px;}
+  .meta .updated{color:rgba(0,0,0,.5);}
+  .nav-link{color:#111111;}
   .filters{border-bottom:3px solid #1565c0;}
   .filters select:focus{border-color:#1565c0;}
-  /* KPI section — glass cards */
+  /* KPI section — todas amarillas */
   .kpis{background:#111111;margin:0;padding:20px 32px 12px;}
   .insights-bar{background:#111111;padding-bottom:20px;}
-  .kpi{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-top:3px solid #1565c0;box-shadow:none;}
-  .kpi .label{color:rgba(255,255,255,.45);}
-  .kpi .value{color:#ffffff;}
-  .kpi .sub{color:rgba(255,255,255,.3);}
-  .kpi.hi{background:#FFE600;border:1px solid #e6b800;border-top:3px solid #e6b800;}
+  .kpi{background:#FFE600;border:1px solid #e6b800;border-top:3px solid #e6b800;box-shadow:none;}
+  .kpi .label{color:rgba(0,0,0,.55);}
+  .kpi .value{color:#111111;}
+  .kpi .sub{color:rgba(0,0,0,.4);}
+  .kpi.hi{background:#FFE600;border:1px solid #e6b800;border-top:3px solid #111111;}
   .kpi.hi .label{color:rgba(0,0,0,.55);}
   .kpi.hi .value{color:#111111;}
   .kpi.hi .sub{color:rgba(0,0,0,.4);}
-  .chip{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-left:3px solid #1565c0;color:rgba(255,255,255,.75);box-shadow:none;}
-  .chip strong{color:#FFE600;}
+  .chip{background:#FFE600;border:none;border-left:3px solid #111111;color:rgba(0,0,0,.7);box-shadow:none;}
+  .chip strong{color:#111111;}
   /* Charts section dark */
   .charts-row{background:#1e1e1e;padding-top:20px;padding-bottom:20px;margin:0;}
   .chart-card{box-shadow:0 4px 16px rgba(0,0,0,.35);}
@@ -146,7 +149,7 @@
     <h1>Card Summary - Placement Dashboard</h1>
   </div>
   <div class="meta">
-    <div class="updated">Actualizado: 2026-04-08 15:16</div>
+    <div class="updated">Actualizado: 2026-04-08 15:18</div>
     <div class="badge">BU = ON</div>
     <div class="badge2">Funnel anclado al mes de oferta</div>
   </div>
