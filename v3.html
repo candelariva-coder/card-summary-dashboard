@@ -85,9 +85,20 @@
   header{background:#111111;}
   .filters{border-bottom:3px solid #1565c0;}
   .filters select:focus{border-color:#1565c0;}
-  .kpi{border-top-color:#dbe8f8;}
-  .kpi.hi{background:#002147;border-top-color:#002147;}
-  .chip{border-left-color:#1565c0;}
+  /* KPI section dark */
+  .kpis{background:#002147;margin:0;padding:20px 32px 12px;}
+  .insights-bar{background:#002147;padding-bottom:20px;}
+  .kpi{background:#0d2654;border-top-color:#1565c0;box-shadow:0 2px 8px rgba(0,0,0,.2);}
+  .kpi .label{color:rgba(255,255,255,.5);}
+  .kpi .value{color:#ffffff;}
+  .kpi .sub{color:rgba(255,255,255,.35);}
+  .kpi.hi{background:#FFE600;border-top-color:#FFE600;}
+  .kpi.hi .label{color:rgba(0,0,0,.55);}
+  .kpi.hi .value{color:#111111;}
+  .kpi.hi .sub{color:rgba(0,0,0,.4);}
+  .chip{background:#0d2654;color:rgba(255,255,255,.8);border-left-color:#FFE600;box-shadow:none;}
+  .chip strong{color:#ffffff;}
+  /* Rest */
   th{background:#002147;color:#ffffff;}
   tr:hover td{background:#f0f5fb;}
   .total-row td{border-top:2px solid #1565c0;}
@@ -111,7 +122,7 @@
     <a href="originations.html" class="nav-link">Originations →</a>
   </div>
   <div class="meta">
-    <div class="updated">Actualizado: 2026-04-08 14:42</div>
+    <div class="updated">Actualizado: 2026-04-08 14:47</div>
     <div class="badge">BU = ON</div>
     <div class="badge2">Funnel anclado al mes de oferta</div>
   </div>
