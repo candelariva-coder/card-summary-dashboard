@@ -85,9 +85,7 @@
   .tbl-trend th:first-child{text-align:left;}
   .tbl-trend td{padding:7px 12px;text-align:right;border-bottom:1px solid #f0f0f0;}
   .tbl-trend td:first-child{text-align:left;font-weight:600;}
-  .tbl-trend tr:hover td{background:#fffde7;}
-  .trend-up{color:#27ae60;font-weight:700;}
-  .trend-dn{color:#e74c3c;font-weight:700;}
+  .tbl-trend tr:hover td{background:#f5f7ff;}
 </style>
 </head>
 <body>
@@ -98,7 +96,7 @@
     <a href="originations.html" class="nav-link">Originations →</a>
   </div>
   <div class="meta">
-    <div class="updated">Actualizado: 2026-04-08 14:33</div>
+    <div class="updated">Actualizado: 2026-04-08 14:37</div>
     <div class="badge">BU = ON</div>
     <div class="badge2">Funnel anclado al mes de oferta</div>
   </div>
@@ -188,8 +186,8 @@ const MONTH_ORDER = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','A
 const SITES    = ['MLA','MLB','MLC','MLM'];
 const PRODUCTS = ['CF','PPV','DINERO_EXPRESS','SELLER_LINE'];
 const PLBL = {'CF':'Cuota Fija','PPV':'PPV','DINERO_EXPRESS':'Dinero Express','SELLER_LINE':'Seller Line'};
-const PCLR = {'CF':'#FFE600','PPV':'#00C9FF','DINERO_EXPRESS':'#FF6B6B','SELLER_LINE':'#A78BFA'};
-const PCLR2= {'CF':'#9a7c00','PPV':'#006f8f','DINERO_EXPRESS':'#8f1f1f','SELLER_LINE':'#5a3daf'};
+const PCLR = {'CF':'#1a237e','PPV':'#1565c0','DINERO_EXPRESS':'#0288d1','SELLER_LINE':'#26c6da'};
+const PCLR2= {'CF':'#0d1257','PPV':'#0a3d7a','DINERO_EXPRESS':'#015d8a','SELLER_LINE':'#007c8a'};
 
 const STEPS = [
   {label:'Oferta',      min:null},
@@ -410,21 +408,18 @@ function render(){
   const tProds=f.product==='Todos'?PRODUCTS:[f.product];
   const tTotals=tMonths.map(m=>{const ag=agg(tRows.filter(r=>r.MonthName===m));
     return{mes:m,off:ag.off,orig:ag.orig,cvr:ag.off>0?+(ag.orig/ag.off*100).toFixed(1):0,
-           amt:getOrig(ag),tkt:ag.orig>0?getOrig(ag)/ag.orig:0};});
+           amt:getOrig(ag),tkt:ag.orig>0?Math.round(getOrig(ag)/ag.orig):0};});
   const tHtml='<table class="tbl-trend"><thead><tr>'
     +'<th>Mes</th><th>Ofertados</th><th>Originaciones</th><th>CVR%</th><th>Monto Orig</th><th>Ticket Prom</th>'
     +'</tr></thead><tbody>'
-    +tTotals.map((d,i)=>{
-      const p=tTotals[i-1];
-      const cc=p?(d.cvr>p.cvr?'trend-up':d.cvr<p.cvr?'trend-dn':''):'';
-      const tc=p?(d.tkt>p.tkt?'trend-up':d.tkt<p.tkt?'trend-dn':''):'';
+    +tTotals.map(d=>{
       return '<tr>'
         +'<td>'+d.mes+'</td>'
         +'<td>'+fmt(d.off)+'</td>'
         +'<td>'+fmt(d.orig)+'</td>'
-        +'<td class="'+cc+'">'+d.cvr+'%</td>'
+        +'<td>'+d.cvr+'%</td>'
         +'<td>'+fmtAmt(d.amt)+'</td>'
-        +'<td class="'+tc+'">'+fmtAmt(d.tkt)+'</td>'
+        +'<td>'+fmtAmt(d.tkt)+'</td>'
         +'</tr>';
     }).join('')+'</tbody></table>';
   document.getElementById('trendTableWrap').innerHTML=tHtml;
