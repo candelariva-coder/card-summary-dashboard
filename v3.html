@@ -89,7 +89,7 @@
     <a href="originations.html" class="nav-link">Originations →</a>
   </div>
   <div class="meta">
-    <div class="updated">Actualizado: 2026-04-08 14:11</div>
+    <div class="updated">Actualizado: 2026-04-08 14:20</div>
     <div class="badge">BU = ON</div>
     <div class="badge2">Funnel anclado al mes de oferta</div>
   </div>
@@ -150,7 +150,8 @@
 </div>
 
 <div class="charts-row">
-  <div class="chart-card"><h3>Tendencia Originaciones</h3><canvas id="chartTrend" height="160"></canvas></div>
+  <div class="chart-card"><h3>Originaciones por Unidad</h3><canvas id="chartTrendUnits" height="160"></canvas></div>
+  <div class="chart-card"><h3>Monto Originado</h3><canvas id="chartTrendAmt" height="160"></canvas></div>
   <div class="chart-card"><h3>CVR por etapa</h3><canvas id="chartFunnelCVR" height="160"></canvas></div>
 </div>
 <div class="charts-row">
@@ -400,16 +401,20 @@ function render(){
   const tMonths=[...new Set(tRows.map(r=>r.MonthName))].sort((a,b)=>MONTH_ORDER.indexOf(a)-MONTH_ORDER.indexOf(b));
   const tProds=f.product==='Todos'?PRODUCTS:[f.product];
   const tTotals=tMonths.map(m=>{const ag=agg(tRows.filter(r=>r.MonthName===m));return{orig:ag.orig,off:ag.off,cvr:ag.off>0?+(ag.orig/ag.off*100).toFixed(1):0};});
-  const tDs=tProds.map(p=>({label:PLBL[p],type:'bar',stack:'orig',yAxisID:'y',
-    data:tMonths.map(m=>{const ag=agg(tRows.filter(r=>r.PRODUCT===p&&r.MonthName===m));return isM?getOrig(ag):ag.orig;}),
-    backgroundColor:PCLR[p]+'CC',borderColor:PCLR[p],borderWidth:1}));
-  tDs.push({label:'CVR %',type:'line',yAxisID:'y2',stack:undefined,
-    data:tTotals.map(d=>d.cvr),borderColor:'#e74c3c',backgroundColor:'transparent',
-    borderWidth:2,pointRadius:5,tension:.3});
-  mkCh('chartTrend','bar',tMonths,tDs,{
-    scales:{y:{beginAtZero:true,stacked:true,title:{display:true,text:isM?'Monto':'Originaciones'}},
-            y2:{beginAtZero:true,position:'right',title:{display:true,text:'CVR %'},grid:{drawOnChartArea:false}}},
-    plugins:{tooltip:{callbacks:{label:ctx=>ctx.dataset.label==='CVR %'?'CVR: '+ctx.parsed.y+'%':ctx.dataset.label+': '+(isM?fmtAmt(ctx.parsed.y):fmt(ctx.parsed.y))}}}});
+  const mkTrend=(id,getDat,yLbl,fmtFn)=>{
+    const ds=tProds.map(p=>({label:PLBL[p],type:'bar',stack:'s',yAxisID:'y',
+      data:tMonths.map(m=>{const ag=agg(tRows.filter(r=>r.PRODUCT===p&&r.MonthName===m));return getDat(ag);}),
+      backgroundColor:PCLR[p]+'CC',borderColor:PCLR[p],borderWidth:1}));
+    ds.push({label:'CVR %',type:'line',yAxisID:'y2',
+      data:tTotals.map(d=>d.cvr),borderColor:'#e74c3c',backgroundColor:'transparent',
+      borderWidth:2,pointRadius:5,tension:.3});
+    mkCh(id,'bar',tMonths,ds,{
+      scales:{y:{beginAtZero:true,stacked:true,title:{display:true,text:yLbl}},
+              y2:{beginAtZero:true,position:'right',title:{display:true,text:'CVR %'},grid:{drawOnChartArea:false}}},
+      plugins:{tooltip:{callbacks:{label:ctx=>ctx.dataset.label==='CVR %'?'CVR: '+ctx.parsed.y+'%':ctx.dataset.label+': '+fmtFn(ctx.parsed.y)}}}});
+  };
+  mkTrend('chartTrendUnits',ag=>ag.orig,'Originaciones',fmt);
+  mkTrend('chartTrendAmt',ag=>getOrig(ag),'Monto',fmtAmt);
 
   const sLabels=STEPS.slice(1).map(s=>s.label);
   const cProds=f.product==='Todos'?PRODUCTS:[f.product];
