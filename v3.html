@@ -79,6 +79,15 @@
   .penet-pct { font-size:26px; font-weight:800; color:#1a1a2e; }
   .penet-detail { font-size:11px; color:#aaa; margin-top:4px; }
   .filters select:disabled { background:#f0f0f0; color:#aaa; cursor:default; opacity:.6; }
+
+  .tbl-trend{width:100%;border-collapse:collapse;font-size:13px;}
+  .tbl-trend th{background:#f5f5f5;font-weight:700;padding:8px 12px;text-align:right;border-bottom:2px solid #e0e0e0;}
+  .tbl-trend th:first-child{text-align:left;}
+  .tbl-trend td{padding:7px 12px;text-align:right;border-bottom:1px solid #f0f0f0;}
+  .tbl-trend td:first-child{text-align:left;font-weight:600;}
+  .tbl-trend tr:hover td{background:#fffde7;}
+  .trend-up{color:#27ae60;font-weight:700;}
+  .trend-dn{color:#e74c3c;font-weight:700;}
 </style>
 </head>
 <body>
@@ -89,7 +98,7 @@
     <a href="originations.html" class="nav-link">Originations →</a>
   </div>
   <div class="meta">
-    <div class="updated">Actualizado: 2026-04-08 14:26</div>
+    <div class="updated">Actualizado: 2026-04-08 14:33</div>
     <div class="badge">BU = ON</div>
     <div class="badge2">Funnel anclado al mes de oferta</div>
   </div>
@@ -150,7 +159,7 @@
 </div>
 
 <div class="charts-row">
-  <div class="chart-card" style="flex:1 1 100%"><h3>Tendencia Mensual</h3><canvas id="chartTrendMain" height="100"></canvas></div>
+  <div class="chart-card" style="flex:1 1 100%"><h3>Tendencia Mensual</h3><div id="trendTableWrap"></div></div>
   <div class="chart-card"><h3>CVR por etapa</h3><canvas id="chartFunnelCVR" height="160"></canvas></div>
 </div>
 <div class="charts-row">
@@ -399,19 +408,26 @@ function render(){
   const tRows=flt(RAW,{...f,mes:'Todos'},false);
   const tMonths=[...new Set(tRows.map(r=>r.MonthName))].sort((a,b)=>MONTH_ORDER.indexOf(a)-MONTH_ORDER.indexOf(b));
   const tProds=f.product==='Todos'?PRODUCTS:[f.product];
-  const tTotals=tMonths.map(m=>{const ag=agg(tRows.filter(r=>r.MonthName===m));return{off:ag.off,orig:ag.orig,cvr:ag.off>0?+(ag.orig/ag.off*100).toFixed(1):0};});
-  mkCh('chartTrendMain','bar',tMonths,[
-    {label:'Ofertados', type:'bar', yAxisID:'y',
-      data:tTotals.map(d=>d.off), backgroundColor:'#aab4c8CC', borderColor:'#aab4c8', borderWidth:1},
-    {label:'Originaciones', type:'bar', yAxisID:'y',
-      data:tTotals.map(d=>d.orig), backgroundColor:'#FFE600CC', borderColor:'#e6b800', borderWidth:1},
-    {label:'CVR %', type:'line', yAxisID:'y2',
-      data:tTotals.map(d=>d.cvr), borderColor:'#e74c3c', backgroundColor:'transparent',
-      borderWidth:2, pointRadius:5, tension:.3}
-  ],{
-    scales:{y:{beginAtZero:true,title:{display:true,text:'Sellers'}},
-            y2:{beginAtZero:true,position:'right',title:{display:true,text:'CVR %'},grid:{drawOnChartArea:false}}},
-    plugins:{tooltip:{callbacks:{label:ctx=>ctx.dataset.label==='CVR %'?'CVR: '+ctx.parsed.y+'%':ctx.dataset.label+': '+fmt(ctx.parsed.y)}}}});
+  const tTotals=tMonths.map(m=>{const ag=agg(tRows.filter(r=>r.MonthName===m));
+    return{mes:m,off:ag.off,orig:ag.orig,cvr:ag.off>0?+(ag.orig/ag.off*100).toFixed(1):0,
+           amt:getOrig(ag),tkt:ag.orig>0?getOrig(ag)/ag.orig:0};});
+  const tHtml='<table class="tbl-trend"><thead><tr>'
+    +'<th>Mes</th><th>Ofertados</th><th>Originaciones</th><th>CVR%</th><th>Monto Orig</th><th>Ticket Prom</th>'
+    +'</tr></thead><tbody>'
+    +tTotals.map((d,i)=>{
+      const p=tTotals[i-1];
+      const cc=p?(d.cvr>p.cvr?'trend-up':d.cvr<p.cvr?'trend-dn':''):'';
+      const tc=p?(d.tkt>p.tkt?'trend-up':d.tkt<p.tkt?'trend-dn':''):'';
+      return '<tr>'
+        +'<td>'+d.mes+'</td>'
+        +'<td>'+fmt(d.off)+'</td>'
+        +'<td>'+fmt(d.orig)+'</td>'
+        +'<td class="'+cc+'">'+d.cvr+'%</td>'
+        +'<td>'+fmtAmt(d.amt)+'</td>'
+        +'<td class="'+tc+'">'+fmtAmt(d.tkt)+'</td>'
+        +'</tr>';
+    }).join('')+'</tbody></table>';
+  document.getElementById('trendTableWrap').innerHTML=tHtml;
 
   const sLabels=STEPS.slice(1).map(s=>s.label);
   const cProds=f.product==='Todos'?PRODUCTS:[f.product];
