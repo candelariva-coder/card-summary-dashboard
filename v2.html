@@ -89,7 +89,7 @@
     <a href="originations.html" class="nav-link">Originations →</a>
   </div>
   <div class="meta">
-    <div class="updated">Actualizado: 2026-04-07 15:25</div>
+    <div class="updated">Actualizado: 2026-04-08 10:59</div>
     <div class="badge">BU = ON</div>
     <div class="badge2">Funnel anclado al mes de oferta</div>
   </div>
@@ -222,7 +222,7 @@ function flt(rows,f,noProd){
     (f.mes==='Todos'     || r.MonthName===f.mes) &&
     (noProd || f.product==='Todos' || r.PRODUCT===f.product) &&
     (f.seg==='Todos'     || r.SEL_SEGMENT===f.seg) &&
-    (f.ent==='Todos'     || r.KYC_ENTITY_TYPE===f.ent)
+    (f.ent==='Todos'     || (f.ent==='PF'&&r.KYC_ENTITY_TYPE==='person') || (f.ent==='PJ'&&r.KYC_ENTITY_TYPE==='company'))
   );
 }
 
