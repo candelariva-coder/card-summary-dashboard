@@ -88,11 +88,12 @@
   header .meta{position:absolute;right:32px;}
   .meta .updated{color:rgba(0,0,0,.5);}
   .nav-link{color:#111111;}
-  .filters{border-bottom:3px solid #1565c0;}
+  /* Filter bar subtle background */
+  .filters{background:#f5f5f5;border-bottom:3px solid #1565c0;}
   .filters select:focus{border-color:#1565c0;}
-  /* KPI section — gris oscuro cards */
-  .kpis{background:#ffffff;margin:0;padding:20px 32px 12px;}
-  .insights-bar{background:#ffffff;padding-bottom:20px;}
+  /* KPI section — dark cards con margen y radius */
+  .kpis{background:#1c1c1e;margin:16px 32px 0;padding:20px 24px 12px;border-radius:12px;}
+  .insights-bar{background:#1c1c1e;margin:0 32px;padding:8px 24px 16px;border-radius:0 0 12px 12px;}
   .kpi{background:#2c2c2e;border:1px solid #3a3a3c;border-top:3px solid #FFE600;box-shadow:none;}
   .kpi .label{color:rgba(255,255,255,.45);}
   .kpi .value{color:#ffffff;}
@@ -111,14 +112,16 @@
   .sec{background:#ffffff;padding-top:16px;padding-bottom:8px;}
   .sec h2{color:#333;}
   .sec span{color:#aaa;}
-  /* Funnel section: fondo negro, cards blancas */
+  /* Funnel section: cards con sombra para distinguirse del fondo */
   .funnel-section{background:#ffffff;}
-  .funnel-card{background:#ffffff;}
-  .funnel-total{background:#ffffff;border-top-color:#002147;}
+  .funnel-card{background:#ffffff;box-shadow:0 2px 12px rgba(0,0,0,.1);border:1px solid #e8e8e8;}
+  .funnel-total{background:#ffffff;border-top-color:#002147;box-shadow:0 2px 12px rgba(0,0,0,.08);border:1px solid #e8e8e8;}
   .ft-bar-bg{background:#f0f2f5;}
   .f-bar-bg{background:#f0f2f5;}
-  /* Header meta legible on black */
-  .meta .updated{color:rgba(255,255,255,.55);}
+  /* Header badges visibles sobre amarillo */
+  .meta .updated{color:rgba(0,0,0,.5);}
+  .meta .badge{background:#111111;color:#FFE600;}
+  .meta .badge2{background:#1a5c1a;color:#ffffff;}
   /* Filter labels more readable */
   .filters label{color:#444;}
   /* Rest */
@@ -138,7 +141,7 @@
   .tbl-trend th:first-child{text-align:left;}
   .tbl-trend td{padding:7px 12px;text-align:right;border-bottom:1px solid #f0f0f0;}
   .tbl-trend td:first-child{text-align:left;font-weight:600;}
-  .tbl-trend tr:hover td{background:#f0f5fb;}
+  .tbl-trend tr:hover td{background:#e8f0fb;}
 </style>
 </head>
 <body>
@@ -147,7 +150,7 @@
     <h1>Card Summary - Placement Dashboard</h1>
   </div>
   <div class="meta">
-    <div class="updated">Actualizado: 2026-04-08 15:26</div>
+    <div class="updated">Actualizado: 2026-04-08 15:29</div>
     <div class="badge">BU = ON</div>
     <div class="badge2">Funnel anclado al mes de oferta</div>
   </div>
