@@ -80,12 +80,27 @@
   .penet-detail { font-size:11px; color:#aaa; margin-top:4px; }
   .filters select:disabled { background:#f0f0f0; color:#aaa; cursor:default; opacity:.6; }
 
+  /* ── V3 Palette Override ───────────────────── */
+  body{background:#f4f6f9;}
+  header{background:#111111;}
+  .filters{border-bottom:3px solid #1565c0;}
+  .filters select:focus{border-color:#1565c0;}
+  .kpi{border-top-color:#dbe8f8;}
+  .kpi.hi{background:#002147;border-top-color:#002147;}
+  .chip{border-left-color:#1565c0;}
+  th{background:#002147;color:#ffffff;}
+  tr:hover td{background:#f0f5fb;}
+  .total-row td{border-top:2px solid #1565c0;}
+  .penet-card{border-left-color:#1565c0;}
+  .funnel-total{border-top-color:#002147;}
+  .ft-bar{background:#1565c0;}
+  /* ── Tabla tendencia ───────────────────────── */
   .tbl-trend{width:100%;border-collapse:collapse;font-size:13px;}
   .tbl-trend th{background:#f5f5f5;font-weight:700;padding:8px 12px;text-align:right;border-bottom:2px solid #e0e0e0;}
   .tbl-trend th:first-child{text-align:left;}
   .tbl-trend td{padding:7px 12px;text-align:right;border-bottom:1px solid #f0f0f0;}
   .tbl-trend td:first-child{text-align:left;font-weight:600;}
-  .tbl-trend tr:hover td{background:#f5f7ff;}
+  .tbl-trend tr:hover td{background:#f0f5fb;}
 </style>
 </head>
 <body>
@@ -96,7 +111,7 @@
     <a href="originations.html" class="nav-link">Originations →</a>
   </div>
   <div class="meta">
-    <div class="updated">Actualizado: 2026-04-08 14:37</div>
+    <div class="updated">Actualizado: 2026-04-08 14:42</div>
     <div class="badge">BU = ON</div>
     <div class="badge2">Funnel anclado al mes de oferta</div>
   </div>
