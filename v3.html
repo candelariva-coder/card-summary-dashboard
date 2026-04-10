@@ -142,10 +142,10 @@
   .tbl-trend td{padding:7px 12px;text-align:right;border-bottom:1px solid #f0f0f0;}
   .tbl-trend td:first-child{text-align:left;font-weight:600;}
   .tbl-trend tr:hover td{background:#e8f0fb;}
-  .f-bar-bg{height:10px!important;border-radius:5px!important;}
-  .f-bar{height:10px!important;border-radius:5px!important;margin:0 auto!important;}
-  .ft-bar-bg{height:10px!important;border-radius:5px!important;}
-  .ft-bar{height:10px!important;border-radius:5px!important;margin:0 auto!important;}
+  .f-bar-bg{height:8px!important;border-radius:4px!important;}
+  .f-bar{height:8px!important;border-radius:4px!important;}
+  .ft-bar-bg{height:8px!important;border-radius:4px!important;}
+  .ft-bar{height:8px!important;border-radius:4px!important;}
 </style>
 </head>
 <body>
@@ -154,7 +154,7 @@
     <h1>Card Summary - Placement Dashboard</h1>
   </div>
   <div class="meta">
-    <div class="updated">Actualizado: 2026-04-10 09:59</div>
+    <div class="updated">Actualizado: 2026-04-10 10:24</div>
     <div class="badge">BU = ON</div>
     <div class="badge2">Funnel anclado al mes de oferta</div>
   </div>
@@ -432,9 +432,8 @@ function render(){
   PRODUCTS.forEach(p=>{const d=agg(rows.filter(r=>r.PRODUCT===p)); if(d.orig>to){to=d.orig;tp=p;}});
   if(tp) chips.push(`<div class="chip">&#128230; Producto lider: <strong>${PLBL[tp]} (${fmtK(to)} orig)</strong></div>`);
   const tv2=STEPS.map(s=>stepVal(rows,s));
-  let md=0,ds='',dsp='';
-  for(let i=1;i<tv2.length;i++){if(tv2[i-1]>0){const d=100-tv2[i]/tv2[i-1]*100;if(d>md){md=d;ds=STEPS[i].label;dsp=STEPS[i-1].label;}}}
-  if(ds) chips.push(`<div class="chip">&#128201; Mayor drop: <strong>${dsp} → ${ds} (${md.toFixed(0)}%)</strong></div>`);
+  let md=0,ds='';
+  for(let i=1;i<tv2.length;i++){if(tv2[i-1]>0){const d=100-tv2[i]/tv2[i-1]*100;if(d>md){md=d;ds=STEPS[i].label;}}}
   chips.push(`<div class="chip">&#128176; USD Originado: <strong>${fmtU(tot.uo)}</strong></div>`);
   document.getElementById('insightsBar').innerHTML=chips.join('');
 
