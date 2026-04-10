@@ -142,6 +142,10 @@
   .tbl-trend td{padding:7px 12px;text-align:right;border-bottom:1px solid #f0f0f0;}
   .tbl-trend td:first-child{text-align:left;font-weight:600;}
   .tbl-trend tr:hover td{background:#e8f0fb;}
+  .f-bar-bg{height:10px!important;border-radius:5px!important;}
+  .f-bar{height:10px!important;border-radius:5px!important;margin:0 auto!important;}
+  .ft-bar-bg{height:10px!important;border-radius:5px!important;}
+  .ft-bar{height:10px!important;border-radius:5px!important;margin:0 auto!important;}
 </style>
 </head>
 <body>
@@ -150,7 +154,7 @@
     <h1>Card Summary - Placement Dashboard</h1>
   </div>
   <div class="meta">
-    <div class="updated">Actualizado: 2026-04-09 12:24</div>
+    <div class="updated">Actualizado: 2026-04-10 09:59</div>
     <div class="badge">BU = ON</div>
     <div class="badge2">Funnel anclado al mes de oferta</div>
   </div>
@@ -211,12 +215,15 @@
 </div>
 
 <div class="charts-row">
-  <div class="chart-card" style="flex:1 1 100%"><h3>Tendencia Mensual</h3><div id="trendTableWrap"></div></div>
-  <div class="chart-card"><h3>CVR por etapa</h3><canvas id="chartFunnelCVR" height="160"></canvas></div>
+  <div class="chart-card" style="flex:1 1 100%"><h3>Evolución Mensual</h3><div id="trendTableWrap"></div></div>
 </div>
 <div class="charts-row">
-  <div class="chart-card"><h3>Ofertados vs Originados por Site</h3><canvas id="chartSite" height="160"></canvas></div>
-  <div class="chart-card"><h3>Mix Originaciones por Producto</h3><canvas id="chartMix" height="160"></canvas></div>
+  <div class="chart-card"><h3>Oferta — Producto</h3><canvas id="chartEvOffProd" height="180"></canvas></div>
+  <div class="chart-card"><h3>Oferta — Segmento</h3><canvas id="chartEvOffSeg" height="180"></canvas></div>
+</div>
+<div class="charts-row">
+  <div class="chart-card"><h3>Originación — Producto</h3><canvas id="chartEvOrigProd" height="180"></canvas></div>
+  <div class="chart-card"><h3>Originación — Segmento</h3><canvas id="chartEvOrigSeg" height="180"></canvas></div>
 </div>
 
 <div class="sec"><h2>Detalle por Site &times; Producto</h2></div>
@@ -250,7 +257,7 @@ const STEPS = [
   {label:'Loan Amount', min:3},
   {label:'Loan Term',   min:3, xf:r=>{const p=r.PATH_RAW||'';return p.includes('term_selection')||p.includes('payments_detail')||+r.N_FUNNEL_RAW>=4;}},
   {label:'R\x26C',     min:4},
-  {label:'Congrats',    min:'orig'},
+  {label:'Originación', min:'orig'},
 ];
 
 const months=[...new Set(RAW.map(r=>r.MonthName))].sort((a,b)=>MONTH_ORDER.indexOf(a)-MONTH_ORDER.indexOf(b));
@@ -425,9 +432,9 @@ function render(){
   PRODUCTS.forEach(p=>{const d=agg(rows.filter(r=>r.PRODUCT===p)); if(d.orig>to){to=d.orig;tp=p;}});
   if(tp) chips.push(`<div class="chip">&#128230; Producto lider: <strong>${PLBL[tp]} (${fmtK(to)} orig)</strong></div>`);
   const tv2=STEPS.map(s=>stepVal(rows,s));
-  let md=0,ds='';
-  for(let i=1;i<tv2.length;i++){if(tv2[i-1]>0){const d=100-tv2[i]/tv2[i-1]*100;if(d>md){md=d;ds=STEPS[i].label;}}}
-  if(ds) chips.push(`<div class="chip">&#128201; Mayor caida: <strong>&rarr;${ds} (${md.toFixed(0)}% drop)</strong></div>`);
+  let md=0,ds='',dsp='';
+  for(let i=1;i<tv2.length;i++){if(tv2[i-1]>0){const d=100-tv2[i]/tv2[i-1]*100;if(d>md){md=d;ds=STEPS[i].label;dsp=STEPS[i-1].label;}}}
+  if(ds) chips.push(`<div class="chip">&#128201; Mayor drop: <strong>${dsp} → ${ds} (${md.toFixed(0)}%)</strong></div>`);
   chips.push(`<div class="chip">&#128176; USD Originado: <strong>${fmtU(tot.uo)}</strong></div>`);
   document.getElementById('insightsBar').innerHTML=chips.join('');
 
@@ -478,78 +485,26 @@ function render(){
     }).join('')+'</tbody></table>';
   document.getElementById('trendTableWrap').innerHTML=tHtml;
 
-  const sLabels=STEPS.slice(1).map(s=>s.label);
-  const cProds=f.product==='Todos'?PRODUCTS:[f.product];
-  mkCh('chartFunnelCVR','bar',sLabels,cProds.map(p=>{
-    const pR=rows.filter(r=>r.PRODUCT===p);
-    const base=stepVal(pR,STEPS[0])||1;
-    return {label:PLBL[p],data:STEPS.slice(1).map(s=>+(stepVal(pR,s)/base*100).toFixed(1)),
-             backgroundColor:PCLR[p]+'BB',borderColor:PCLR[p],borderWidth:1.5};
-  }),{scales:{y:{beginAtZero:true,title:{display:true,text:'% de Ofertados'}}},plugins:{tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+ctx.parsed.y+'%'}}}});
-
-  const siteD=SITES.map(s=>agg(rows.filter(r=>r.SITE===s)));
-  if(CH['chartSite'])CH['chartSite'].destroy();
-  CH['chartSite']=new Chart(document.getElementById('chartSite'),{
-    type:'bar',
-    data:{
-      labels:SITES,
-      datasets:[
-        {label:'Ofertados', data:siteD.map(d=>d.off),  backgroundColor:'#555555', yAxisID:'y'},
-        {label:'Originados',data:siteD.map(d=>d.orig), backgroundColor:'#bbbbbb', yAxisID:'y2'},
-      ]
-    },
-    options:{
-      responsive:true,
-      plugins:{
-        legend:{position:'bottom'},
-        tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+fmt(ctx.parsed.y)}}
-      },
-      scales:{
-        y:{beginAtZero:true,position:'left',title:{display:true,text:'Ofertados',color:'#999',font:{size:10}},ticks:{color:'#999'}},
-        y2:{beginAtZero:true,position:'right',title:{display:true,text:'Originados',color:'#b8960a',font:{size:10}},ticks:{color:'#b8960a'},grid:{drawOnChartArea:false}}
-      }
-    }
-  });
-
-  const mProds=f.product==='Todos'?PRODUCTS:[f.product];
-  const mData=mProds.map(p=>agg(rows.filter(r=>r.PRODUCT===p)).orig);
-  const mTotal=mData.reduce((a,v)=>a+v,0)||1;
-  if(CH['chartMix'])CH['chartMix'].destroy();
-  CH['chartMix']=new Chart(document.getElementById('chartMix'),{
-    type:'doughnut',
-    data:{
-      labels:mProds.map(p=>PLBL[p]),
-      datasets:[{data:mData,backgroundColor:mProds.map(p=>PCLR[p]),borderWidth:2}]
-    },
-    options:{
-      responsive:true,
-      plugins:{
-        legend:{position:'bottom',labels:{font:{size:11}}},
-        tooltip:{callbacks:{label:ctx=>ctx.label+': '+fmt(ctx.parsed)+' ('+( ctx.parsed/mTotal*100).toFixed(1)+'%)'}},
-        datalabels:{
-          display:false
-        }
-      }
-    },
-    plugins:[{
-      id:'pctLabels',
-      afterDatasetDraw(chart){
-        const {ctx,data}=chart;
-        ctx.save();
-        chart.getDatasetMeta(0).data.forEach((arc,i)=>{
-          const pct=(data.datasets[0].data[i]/mTotal*100);
-          if(pct<3)return;
-          const {x,y}=arc.getCenterPoint();
-          ctx.fillStyle='#fff';
-          ctx.font='bold 12px Segoe UI';
-          ctx.textAlign='center';
-          ctx.textBaseline='middle';
-          ctx.fillText(pct.toFixed(1)+'%',x,y);
-        });
-        ctx.restore();
-      }
-    }]
-  });
+  const SCLR={'1.LONGTAIL':'#1a237e','2.SMB':'#1565c0','3.BIG SELLERS':'#26c6da'};
+  const SLBL={'1.LONGTAIL':'Longtail','2.SMB':'SMB','3.BIG SELLERS':'Big Sellers'};
+  const SEGS=['1.LONGTAIL','2.SMB','3.BIG SELLERS'];
+  const evOpts={scales:{x:{stacked:true},y:{stacked:true,beginAtZero:true}},plugins:{legend:{position:'bottom',labels:{font:{size:10}}},tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+(isM?fmtAmt(ctx.parsed.y):fmt(ctx.parsed.y))}}}};
+  mkCh('chartEvOffProd','bar',tMonths,tProds.map(p=>{
+    const d=tMonths.map(m=>{const ag=agg(tRows.filter(r=>r.PRODUCT===p&&r.MonthName===m));return isM?getProp(ag):ag.off;});
+    return {label:PLBL[p],data:d,backgroundColor:PCLR[p],stack:'s'};
+  }),evOpts);
+  mkCh('chartEvOffSeg','bar',tMonths,SEGS.map(s=>{
+    const d=tMonths.map(m=>{const ag=agg(tRows.filter(r=>r.SEL_SEGMENT===s&&r.MonthName===m));return isM?getProp(ag):ag.off;});
+    return {label:SLBL[s],data:d,backgroundColor:SCLR[s],stack:'s'};
+  }),evOpts);
+  mkCh('chartEvOrigProd','bar',tMonths,tProds.map(p=>{
+    const d=tMonths.map(m=>{const ag=agg(tRows.filter(r=>r.PRODUCT===p&&r.MonthName===m));return isM?getOrig(ag):ag.orig;});
+    return {label:PLBL[p],data:d,backgroundColor:PCLR[p],stack:'s'};
+  }),evOpts);
+  mkCh('chartEvOrigSeg','bar',tMonths,SEGS.map(s=>{
+    const d=tMonths.map(m=>{const ag=agg(tRows.filter(r=>r.SEL_SEGMENT===s&&r.MonthName===m));return isM?getOrig(ag):ag.orig;});
+    return {label:SLBL[s],data:d,backgroundColor:SCLR[s],stack:'s'};
+  }),evOpts);
 
   // Table headers adapt to currency
   document.getElementById('thProp').textContent='Prop '+currLabel;
