@@ -155,7 +155,7 @@
     <h1>Card Summary - Placement Dashboard</h1>
   </div>
   <div class="meta">
-    <div class="updated">Actualizado: 2026-04-20 15:53</div>
+    <div class="updated">Actualizado: 2026-04-21 14:26</div>
     <div class="badge">BU = ON</div>
     <div class="badge2">Funnel anclado al mes de oferta</div>
   </div>
@@ -450,7 +450,7 @@ function render(){
   const cardOff  = rows.reduce((a,r)=>a+(+r.Q_OFERTADOS_CARD||0),0);
   const p = (a,b) => b>0 ? (a/b*100).toFixed(1)+'%' : '—';
   document.getElementById('penetGrid').innerHTML = [
-    [false, 'Oferta Card / ON',       p(cardOff, onOffQ),  `Card: ${fmtK(cardOff)} &nbsp;|&nbsp; ON: ${fmtK(onOffQ)}`],
+    [false, 'Oferta Card / ON',       p(cardOff, tot.off),  `Card: ${fmtK(cardOff)} &nbsp;|&nbsp; ON: ${fmtK(tot.off)}`],
     [false, 'Orig Card / ON (Q)',      p(tot.orig, onOrigQ),`Card: ${fmtK(tot.orig)} &nbsp;|&nbsp; ON: ${fmtK(onOrigQ)}`],
     [false, 'Orig Card / ON (USD)',    p(tot.uo, onOrigU),  `Card: ${fmtU(tot.uo)} &nbsp;|&nbsp; ON: ${fmtU(onOrigU)}`],
     [true,  'New Users / Card Orig (Q)',  p(cardNewQ, tot.orig), `New: ${fmtK(cardNewQ)} &nbsp;|&nbsp; Total: ${fmtK(tot.orig)}`],
