@@ -147,6 +147,8 @@
   .f-bar{height:8px!important;border-radius:4px!important;}
   .ft-bar-bg{height:8px!important;border-radius:4px!important;}
   .ft-bar{height:8px!important;border-radius:4px!important;}
+  #deviceBanner{display:none;background:#FFF8E1;border-left:5px solid #FFE600;color:#5a4a00;font-size:13px;font-weight:600;padding:10px 32px;letter-spacing:.1px;}
+  #deviceBanner span{font-weight:800;}
 </style>
 </head>
 <body>
@@ -155,7 +157,7 @@
     <h1>Card Summary - Placement Dashboard</h1>
   </div>
   <div class="meta">
-    <div class="updated">Actualizado: 2026-04-30 12:28</div>
+    <div class="updated">Actualizado: 2026-04-30 13:29</div>
     <div class="badge">BU = ON</div>
     <div class="badge2">Funnel anclado al mes de oferta</div>
   </div>
@@ -207,6 +209,7 @@
       <option value="LC">Moneda Local</option>
     </select></div>
 </div>
+<div id="deviceBanner">⚠ <span>Filtro device activo:</span> los métricas reflejan únicamente el universo ofertado con view trackeada en la Card. Sellers sin view no son contemplados en este filtro.</div>
 
 <div class="kpis" id="kpis"></div>
 <div class="insights-bar" id="insightsBar"></div>
@@ -403,6 +406,7 @@ function renderFunnel(rows,prod){
 function render(){
   const f=gf();
   const rows=flt(RAW,f,false);
+  document.getElementById('deviceBanner').style.display=f.device==='Todos'?'none':'block';
   const tot=agg(rows);
   const isM  =f.unit==='M';
   const isUSD=f.curr==='USD';
